@@ -4,14 +4,15 @@ const bcrypt = require("bcrypt")
 const UserSchema = new mongoose.Schema({
     firstName: {type: String, required: true, min:2},
     lastName: {type: String, required: true, min: 2},
-    email: {type: String, required: true, unique: true},
+    normalizedEmail: {type: String, required: true, unique: true},
+    originalEmail: {type: String, required: true},
     password: {type: String, required: true},
     address: {
         street1: {type: String, required: true},
         street2: String,
-        city: {type: String, required: true },
-        state: {type: String, required: true },
-        country: {type: String, required: true }
+        city: {type: String, required: true},
+        state: {type: String, required: true},
+        country: {type: String, required: true}
     },
     role: {
         type: String,
@@ -19,6 +20,9 @@ const UserSchema = new mongoose.Schema({
         default: 'client'
     }
 })
+
+UserSchema.index({ normalizedEmail: 1 }, { unique: true })
+UserSchema.index({ originalEmail: 1 })
 
 UserSchema.pre('save', async function(next){
     try{
