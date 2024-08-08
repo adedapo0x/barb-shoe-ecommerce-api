@@ -7,7 +7,7 @@ const httpLogin = async (req, res) => {
         const { email, password } = req.body
 
         // check if user exists by email or if user password is correct
-        const user = await User.findOne({email})
+        const user = await User.findOne({normalizedEmail: email})
         if (!user || !await bcrypt.compare(password, user.password)) {
             return res.status(400).json({message: "Incorrect email or password"})
         }
