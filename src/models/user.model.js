@@ -1,6 +1,13 @@
 const mongoose = require("mongoose")
 const bcrypt = require("bcrypt")
 
+function normalizeEmail(data){
+    const lowerTrimmedEmail = data.toLowerCase().trim();
+    const splitEmail = lowerTrimmedEmail.split('@')
+    const removedPlusAndDot = splitEmail[0].split('+')[0].replaceAll('.','')
+    return removedPlusAndDot + '@' + splitEmail[1]
+}
+
 const UserSchema = new mongoose.Schema({
     firstName: {type: String, required: true, min:2},
     lastName: {type: String, required: true, min: 2},
@@ -26,6 +33,10 @@ UserSchema.index({ originalEmail: 1 })
 
 UserSchema.pre('save', async function(next){
     try{
+        // normalize email and store in its separate field
+        this.normalizedEmail = normalizeEmail(this.originalEmail)
+
+        // generate password hash
         const salt = await bcrypt.genSalt(10)
         this.password = await bcrypt.hash(this.password, salt)
         next()
@@ -34,5 +45,5 @@ UserSchema.pre('save', async function(next){
     }
 })
 
-module.exports = mongoose.model("users", UserSchema)
+module.exports = mongoose.model("User", UserSchema)
 
