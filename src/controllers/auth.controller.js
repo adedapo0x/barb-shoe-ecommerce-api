@@ -15,10 +15,12 @@ const httpLogin = async (req, res) => {
         //generate JWT token for authentication
         const payload = { authId : user._id }
         const accessToken = jwt.sign(payload, process.env.SECRET_KEY, {expiresIn: '1h'})
+        if (user.role === 'admin'){
+            req.user = user
+        }
         return res.json({accessToken})
     } catch (err){
         console.log(err)
-        
     }
 }
 
