@@ -11,15 +11,12 @@ function normalizeEmail(data){
 const UserSchema = new mongoose.Schema({
     firstName: {type: String, required: true, min:2},
     lastName: {type: String, required: true, min: 2},
-    normalizedEmail: {type: String, required: true, unique: true},
+    normalizedEmail: {type: String,required: true, unique: true},
     originalEmail: {type: String, required: true},
     password: {type: String, required: true},
     address: {
-        street1: {type: String, required: true},
-        street2: String,
-        city: {type: String, required: true},
-        state: {type: String, required: true},
-        country: {type: String, required: true}
+        street1: String, street2: String, city: String,
+        state: String, country: String
     },
     role: {
         type: String,
@@ -31,11 +28,13 @@ const UserSchema = new mongoose.Schema({
 UserSchema.index({ normalizedEmail: 1 }, { unique: true })
 UserSchema.index({ originalEmail: 1 })
 
+UserSchema.pre('validate', function(next) {
+    this.normalizedEmail = normalizeEmail(this.originalEmail)
+    next()
+})
 UserSchema.pre('save', async function(next){
     try{
-        // normalize email and store in its separate field
-        this.normalizedEmail = normalizeEmail(this.originalEmail)
-
+        if (!this.isModified("password")) next()
         // generate password hash
         const salt = await bcrypt.genSalt(10)
         this.password = await bcrypt.hash(this.password, salt)
