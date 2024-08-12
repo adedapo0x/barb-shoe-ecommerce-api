@@ -7,7 +7,7 @@ const httpRegister = async (req, res) => {
             return res.status(400).json( {errors: errors.array()} )
         }
 
-        const { firstName, lastName, email, password, address, role } = req.body
+        const { firstName, lastName, email, password } = req.body
 
         // check if email already exists
         const existingUser = await User.findOne({ normalizedEmail: email })

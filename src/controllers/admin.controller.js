@@ -7,7 +7,7 @@ const createAdmin = async (req, res) => {
 
     }
 }
-const getAllUsers = async (req, res) => {
+const getAllUsers = async (req, res) =>{
     try{
         const allUsers = await User.find({}, "-password")
         return res.json({data: allUsers})
