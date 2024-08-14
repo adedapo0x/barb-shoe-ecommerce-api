@@ -3,7 +3,7 @@ const userRouter = express.Router()
 const httpRegister = require('../controllers/user.controller')
 const httpLogin = require('../controllers/auth.controller')
 const verifyJWT = require('../middlewares/verifyJWT')
-const { getWears } = require('../controllers/products.controller')
+const { filterWears, displayAllWears } = require('../controllers/products.controller')
 
 const { body, query } = require("express-validator")
 const checkInputErrors = [
@@ -19,16 +19,18 @@ const checkQueryError = [
     query('category').optional().isString().trim(),
     query('minPrice').optional().isInt({min: 0}),
     query('maxPrice').optional().isInt({min: 0}),
-    query('available').optional().isBoolean(),
     query('sort').optional().isIn(['price_asc', 'price_desc'])
 ]
 
+userRouter.get('/', displayAllWears)
+userRouter.get('/get-wears', checkQueryError, filterWears)
 userRouter.post('/register', checkInputErrors, httpRegister)
 userRouter.post('/auth/login', httpLogin)
 
 userRouter.use(verifyJWT)
 
-userRouter.get('get-wears', checkQueryError, getWears)
+userRouter.get('/get-wears', checkQueryError, filterWears)
+
 
 
 module.exports = userRouter
