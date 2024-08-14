@@ -4,7 +4,7 @@ const verifyJWT = require("../middlewares/verifyJWT")
 const verifyAdminStatus = require('../middlewares/verifyAdminStatus')
 const getAllUsers = require('../controllers/admin.controller')
 const httpLogin = require('../controllers/auth.controller')
-const { addWears } = require('../controllers/products.controller')
+const { addWears, findWears, displayAllWears, editOrUpdateWears } = require('../controllers/products.controller')
 
 adminRouter.post('/auth/login', httpLogin)
 
@@ -14,7 +14,9 @@ adminRouter.use(verifyAdminStatus)
 
 adminRouter.get('/get-users', getAllUsers)
 adminRouter.post('/add-wears', addWears)
-adminRouter.get('/show-all-wears')
+adminRouter.get('/show-all-wears', displayAllWears)
+adminRouter.get('/find-wears', findWears)
+adminRouter.post('/edit-wear', editOrUpdateWears)
 
 
 
