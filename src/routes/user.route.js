@@ -4,24 +4,10 @@ const httpRegister = require('../controllers/user.controller')
 const httpLogin = require('../controllers/auth.controller')
 const verifyJWT = require('../middlewares/verifyJWT')
 const { filterWears, displayAllWears } = require('../controllers/products.controller')
-const { addToCart, clearCart, viewCart } = require('../controllers/cart.controller')
+const { addToCart, clearCart, viewCart, removeFromCart } = require('../controllers/cart.controller')
+const { checkQueryError , checkInputErrors } = require('../middlewares/checkErrors')
 
-const { body, query } = require("express-validator")
-const checkInputErrors = [
-    body('firstName').notEmpty().trim(),
-    body('lastName').notEmpty().trim(),
-    body('email').isEmail(),
-    body('password').notEmpty().custom((value, {req} ) => {
-        if (value !== req.body.confirmPassword) throw new Error('Passwords do not match!')
-        return true
-    })]
-
-const checkQueryError = [
-    query('category').optional().isString().trim(),
-    query('minPrice').optional().isInt({min: 0}),
-    query('maxPrice').optional().isInt({min: 0}),
-    query('sort').optional().isIn(['price_asc', 'price_desc'])
-]
+// Routes
 
 userRouter.get('/', displayAllWears)
 userRouter.get('/get-wears', checkQueryError, filterWears)
@@ -32,7 +18,8 @@ userRouter.use(verifyJWT)
 
 userRouter.get('/cart/view', viewCart)
 userRouter.post('/cart/add', addToCart)
-userRouter.post('/cart/clear', clearCart)
+userRouter.patch('/cart/remove/:productId', removeFromCart)
+userRouter.delete('/cart/clear', clearCart)
 
 
 
