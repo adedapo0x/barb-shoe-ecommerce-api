@@ -1,6 +1,18 @@
 const Product = require('../models/products.model')
 const Cart= require('../models/cart.model')
 
+const viewCart = async(req, res) => {
+    try{
+        // fetch currently logged in user id from req.id and search for user's cart from DB
+        const userId  = req.user.authId
+        const cart = await Cart.findOne({ userId })
+        if (!cart) return res.json({message: "Cart currently empty. Add wears to view cart"})
+        return res.json(cart)
+    } catch (e) {
+        console.log(e)
+        res.status(401).json({message: "Error loading cart. Please try again"})
+    }
+}
 const addToCart = async (req, res) => {
     try{
         const userId = req.user.authId
@@ -12,6 +24,12 @@ const addToCart = async (req, res) => {
         let userCart = await Cart.findOne({ userId })
         if (!userCart){
             userCart = new Cart({userId, products: [], totalBill: 0})
+        }
+
+        // check for product availability
+        const available = product.availability
+        if (!available){
+            res.status(400).json({message: "Product currently not available. Please try again later"})
         }
 
         // Checks if product exists in cart
@@ -33,11 +51,23 @@ const addToCart = async (req, res) => {
             return acc + (curr.price * curr.quantity)
         }, 0)
 
-        console.log(userCart)
+        await userCart.save()
+        return res.json(userCart)
     } catch(err){
         console.log(err)
         return res.status(401).json({message: "Error encountered. Please try again"})
     }
 }
 
-module.exports = { addToCart }
+const clearCart = async(req, res) => {
+    try{
+        const userId = req.user.authId
+        await Cart.deleteOne({ userId })
+        res.json({message: "Cart cleared successfully"})
+    } catch (e) {
+        console.log(e)
+        return res.status(404).json({status: "Failed", message: "Action failed. Try to clear cart again"})
+    }
+}
+
+module.exports = { addToCart, clearCart, viewCart }
