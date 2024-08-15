@@ -4,7 +4,7 @@ const httpRegister = require('../controllers/user.controller')
 const httpLogin = require('../controllers/auth.controller')
 const verifyJWT = require('../middlewares/verifyJWT')
 const { filterWears, displayAllWears } = require('../controllers/products.controller')
-const { addToCart } = require('../controllers/cart.controller')
+const { addToCart, clearCart, viewCart } = require('../controllers/cart.controller')
 
 const { body, query } = require("express-validator")
 const checkInputErrors = [
@@ -30,7 +30,9 @@ userRouter.post('/auth/login', httpLogin)
 
 userRouter.use(verifyJWT)
 
-userRouter.post('/add-to-cart', verifyJWT,addToCart)
+userRouter.get('/cart/view', viewCart)
+userRouter.post('/cart/add', addToCart)
+userRouter.post('/cart/clear', clearCart)
 
 
 
