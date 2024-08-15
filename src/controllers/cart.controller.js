@@ -59,6 +59,25 @@ const addToCart = async (req, res) => {
     }
 }
 
+const removeFromCart = async (req, res) => {
+    try{
+        const productId = req.params.productId
+        const userId = req.user.authId
+        const cart = await Cart.findOne({ userId })
+        const updatedCart = await Cart.findOneAndUpdate({ userId }, {$pull: { products: { productId }}}, { new: true })
+        if (cart.products.length === updatedCart.products.length){
+            return res.json({message: "Footwear is not in cart!"})
+        }
+        updatedCart.totalBill = updatedCart.products.reduce((acc, curr) => {
+            return acc + (curr.price * curr.quantity)
+        }, 0)
+        return res.json({message: "Footwear removed successfully", updatedCart})
+    } catch (e) {
+        console.log(e)
+        return res.status(400).json({message: "Error removing footwear from cart. Please try again later"})
+    }
+}
+
 const clearCart = async(req, res) => {
     try{
         const userId = req.user.authId
@@ -70,4 +89,4 @@ const clearCart = async(req, res) => {
     }
 }
 
-module.exports = { addToCart, clearCart, viewCart }
+module.exports = { addToCart, clearCart, viewCart, removeFromCart }

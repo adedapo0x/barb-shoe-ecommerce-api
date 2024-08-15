@@ -65,10 +65,11 @@ const editOrUpdateWears = async(req, res) => {
     try{
         const { name, category, price, stock, description, availability } = req.body
 
-        // allow for case insensitive search of footwear names
+        // allow for case insensitive search of footwear name
         const nameRegex = new RegExp(name, 'i')
 
-        const wearToBeUpdated = await Product.findOne({ nameRegex })
+        // name is the unique key that represents distinct wears in this scenario
+        const wearToBeUpdated = await Product.findOne({ name: nameRegex })
 
         if (!wearToBeUpdated) return res.status(400).json({message: "Foot wear not in inventory. Please check name again"})
 
@@ -82,8 +83,10 @@ const editOrUpdateWears = async(req, res) => {
         if (description !== wearToBeUpdated.description) updateObj.description = description
         if (availability !== wearToBeUpdated.availability) updateObj.availability = availability
 
-        if (Object.keys.length !== 0){
-            const updatedWear = await Product.findOneAndUpdate(name, {$set: { updateObj }}, {new: true, runValidators: true})
+        // check if anything changed i.e updateObj is no longer empty
+        // if so then we update accordingly
+        if (Object.keys(updateObj).length !== 0){
+            const updatedWear = await Product.findOneAndUpdate({name}, {$set: updateObj }, {new: true, runValidators: true})
             return res.json({status: "Successful", message: "Update completed successfully"})
         } else res.json({message: "No changes detected!"})
     } catch (e) {
