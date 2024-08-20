@@ -16,4 +16,12 @@ const checkQueryError = [
     query('sort').optional().isIn(['price_asc', 'price_desc'])
 ]
 
-module.exports = { checkInputErrors, checkQueryError }
+const checkAddressErrors = [
+    body('street1').notEmpty().isString().trim(),
+    body('street2').optional().isString().trim(),
+    body('city').notEmpty().isString().trim(),
+    body('state').notEmpty().isString(),
+    body('country').notEmpty().isString()
+]
+
+module.exports = { checkInputErrors, checkQueryError, checkAddressErrors }
