@@ -99,7 +99,7 @@ const displayAllWears = async(req, res) => {
     try{
         const distinctCategories = await Product.distinct('category', {availability: true})
         const wears = await Product.aggregate([
-            { $match: { category : {$in: distinctCategories }}},
+            { $match: { category : { $in: distinctCategories }}},
             { $group: { _id: '$category', count: { $sum: 1 }, goods: { $push: '$$ROOT'} }}
         ])
         return res.json({data: wears})
@@ -109,4 +109,38 @@ const displayAllWears = async(req, res) => {
     }
 }
 
-module.exports = {addWears, filterWears, findWears, editOrUpdateWears, displayAllWears}
+const adminChangeAvailability = async(req, res) => {
+    try{
+
+    } catch(err){
+
+    }
+}
+
+const changeAvailability = async (req, res) =>{
+    try{
+        const productId = req.params.productId
+        // searches for particular product using productID, then does a conditional partial update
+        // if availability equals true it gets changed to false and vice versa
+
+        const product = await Product.findOneAndUpdate({_id: productId}, [
+            { $set: {
+                    availability: {
+                        $cond: {
+                            if: { $eq: ["$availability", "true"]},
+                            then: "false",
+                            else: "true"
+                        }
+                    }
+                }}
+        ])
+        return res.status.json({message: `Availability is now ${product.availability}`})
+    } catch (err){
+        console.log(err)
+        return res.status(404).json({message: "Problem updating availability of product!"})
+    }
+
+}
+
+
+module.exports = {addWears, filterWears, findWears, editOrUpdateWears, displayAllWears, changeAvailability}

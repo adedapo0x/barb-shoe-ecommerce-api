@@ -29,13 +29,15 @@ const addToCart = async (req, res) => {
         // check for product availability
         const available = product.availability
         if (!available){
-            res.status(400).json({message: "Product currently not available. Please try again later"})
+            return res.status(400).json({message: "Product currently not available. Please try again later"})
         }
 
+        let initQuantity, index  // get initQuantity to show user amount of same goods previously in the cart so they don't over order
         // Checks if product exists in cart
         const productIndex = userCart.products.findIndex(val => val.productId.toString() === productId)
         // if product already exists in cart, update its quantity
         if (productIndex > -1){
+            initQuantity = userCart.products[productIndex].quantity
             userCart.products[productIndex].quantity += quantity
         } else {
             userCart.products.push({
@@ -46,11 +48,19 @@ const addToCart = async (req, res) => {
             })
         }
 
+        // Checks if stock is up to quantity added to cart to avoid logical errors
+        // if not, returns error notifying client side that they have to reduce cart quantity
+        console.log(productIndex)
+        if (userCart.products[userCart.products.length - 1].quantity > product.stock){
+            return res.status(404).json({message: `Not available! We only have ${product.stock} left.`})
+        } else if (productIndex !== -1 && userCart.products[productIndex].quantity > product.stock){
+            return res.status(404).json({message: `Not available! We only have ${product.stock} left, you already have ${initQuantity} in your cart`})
+        }
+
         // gets the totalBill now
         userCart.totalBill = userCart.products.reduce((acc, curr) => {
             return acc + (curr.price * curr.quantity)
         }, 0)
-
         await userCart.save()
         return res.json(userCart)
     } catch(err){
