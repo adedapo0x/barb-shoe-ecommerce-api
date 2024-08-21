@@ -5,7 +5,7 @@ const verifyAdminStatus = require('../middlewares/verifyAdminStatus')
 const checkInputErrors = require('../middlewares/checkErrors')
 const { getAllUsers, createAdmin } = require('../controllers/admin.controller')
 const httpLogin = require('../controllers/auth.controller')
-const { addWears, findWears, displayAllWears, editOrUpdateWears } = require('../controllers/products.controller')
+const { addWears, findWears, displayAllWears, editOrUpdateWears, changeAvailability } = require('../controllers/products.controller')
 
 
 adminRouter.post('/auth/login', httpLogin)
@@ -19,7 +19,7 @@ adminRouter.post('/add-wears', addWears)
 adminRouter.get('/show-all-wears', displayAllWears)
 adminRouter.get('/find-wears', findWears)
 adminRouter.patch('/edit-wear', editOrUpdateWears)
-
+adminRouter.patch('/product/:productId', changeAvailability)
 
 
 module.exports = adminRouter
