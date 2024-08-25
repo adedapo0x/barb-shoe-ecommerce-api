@@ -9,7 +9,7 @@ const startServer = async (req, res) => {
     const server = http.createServer(app)
     await connectDB()
 
-    server.listen(PORT, ()=> console.log("Server running fine!"))
+    server.listen(PORT, ()=> console.log("Server listening for request!"))
 }
 
 startServer()
