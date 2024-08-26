@@ -50,7 +50,6 @@ const addToCart = async (req, res) => {
 
         // Checks if stock is up to quantity added to cart to avoid logical errors
         // if not, returns error notifying client side that they have to reduce cart quantity
-        console.log(productIndex)
         if (userCart.products[userCart.products.length - 1].quantity > product.stock){
             return res.status(404).json({message: `Not available! We only have ${product.stock} left.`})
         } else if (productIndex !== -1 && userCart.products[productIndex].quantity > product.stock){
