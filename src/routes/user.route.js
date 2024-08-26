@@ -13,7 +13,7 @@ const { checkQueryError , checkInputErrors } = require('../middlewares/checkErro
 userRouter.get('/', displayAllWears)
 userRouter.get('/get-wears', checkQueryError, filterWears)
 userRouter.post('/register', checkInputErrors, httpRegister)
-userRouter.post('/auth/login', httpLogin)
+userRouter.post('/auth/login', checkInputErrors, httpLogin)
 
 userRouter.use(verifyJWT)
 
