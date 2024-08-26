@@ -11,8 +11,8 @@ const addAddress = async (req, res) => {
 
 const buyWear = async (req, res) => {
     try{
-        const user = req.user.authId
-        const userCart = await Cart.findOne({ userId: user })
+        const userId = req.user.authId
+        const userCart = await Cart.findOne({ userId })
 
         // verifies once again that unavailable wears does not make it to checkout
         for (let i = 0; i < userCart.products.length; i++){
@@ -33,10 +33,10 @@ const buyWear = async (req, res) => {
             let newStock = product.stock - userCart.products[i].quantity
             if (newStock === 0) product.availability = false
             product.stock = newStock
+            await product.save()
         }
-
-
-        console.log(order)
+        await Cart.deleteOne({ userId })
+        return res.json({message: "Purchase confirmed and successful! Thanks for shopping with us."})
     } catch (err) {
         console.log(err)
         return res.json({message: "Error encountered during checkout!"})
