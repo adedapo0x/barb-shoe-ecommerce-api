@@ -15,8 +15,11 @@ const UserSchema = new mongoose.Schema({
     originalEmail: {type: String, required: true},
     password: {type: String, required: true},
     address: {
-        street1: { type: String, required: true }, street2: String, city: { type: String, required: true },
-        state: { type: String, required: true}, country: { type: String, required: true }
+        type: {
+            street1: { type: String, required: true }, street2: String, city: { type: String, required: true },
+            state: { type: String, required: true}, country: { type: String, required: true }
+        },
+        required: false
     },
     role: {
         type: String,
