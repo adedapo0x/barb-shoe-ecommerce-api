@@ -15,15 +15,14 @@ userRouter.get('/get-wears', checkQueryError, filterWears)
 userRouter.post('/register', checkInputErrors, httpRegister)
 userRouter.post('/auth/login', checkInputErrors, httpLogin)
 
-userRouter.use(verifyJWT)
+// userRouter.use(verifyJWT)
 
-userRouter.get('/cart/view', viewCart)
-userRouter.post('/cart/add', addToCart)
-userRouter.patch('/cart/remove/:productId', removeFromCart)
-userRouter.delete('/cart/clear', clearCart)
-userRouter.patch('/update/address', addAddress)
-userRouter.post('/confirm/order', buyWear)
-
+userRouter.get('/cart/view', verifyJWT, viewCart)
+userRouter.post('/cart/add', verifyJWT,addToCart)
+userRouter.patch('/cart/remove/:productId', verifyJWT, removeFromCart)
+userRouter.delete('/cart/clear', verifyJWT, clearCart)
+userRouter.patch('/update/address', verifyJWT, addAddress)
+userRouter.post('/confirm/order', verifyJWT, buyWear)
 
 
 module.exports = userRouter
