@@ -9,7 +9,6 @@ const { addWears, findWears, displayAllWears, editOrUpdateWears, changeAvailabil
 
 
 adminRouter.post('/auth/login', checkInputErrors, httpLogin)
-adminRouter.post('/auth/login', httpLogin)
 
 adminRouter.use(verifyJWT)
 adminRouter.use(verifyAdminStatus)
