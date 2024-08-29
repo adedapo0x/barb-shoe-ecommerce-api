@@ -39,7 +39,7 @@ const filterWears = async (req, res) =>{
         return res.json({status: "Successful", data: products})
     } catch (e) {
         console.log(e)
-        return res.status(500).json({message: "Error encountered."})
+        return res.status(500).json({message: "Error encountered. Please try again"})
     }
 }
 
@@ -106,14 +106,6 @@ const displayAllWears = async(req, res) => {
     } catch (e) {
         console.log(e)
         return res.status(404).json({message: "Error loading page"})
-    }
-}
-
-const adminChangeAvailability = async(req, res) => {
-    try{
-
-    } catch(err){
-
     }
 }
 
