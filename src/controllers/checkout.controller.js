@@ -2,11 +2,16 @@ const User = require('../models/user.model')
 const Cart = require('../models/cart.model')
 const Product = require('../models/products.model')
 const addAddress = async (req, res) => {
-    const updatedAddress = req.body
-    const userId = req.user.authId
+    try{
+        const updatedAddress = req.body
+        const userId = req.user.authId
 
-    const user = await User.findOneAndUpdate({ _id: userId }, { $set: { address: updatedAddress }}, {new: true, runValidators: true})
-    console.log(user)
+        const user = await User.findOneAndUpdate({ _id: userId }, { $set: { address: updatedAddress }}, {new: true, runValidators: true})
+        return res.json({message: "Email added to profile successfully"})
+    } catch (err){
+        console.log(err)
+        return res.json({message: "Error adding address. Please try again"})
+    }
 }
 
 const buyWear = async (req, res) => {
