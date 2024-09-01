@@ -28,7 +28,7 @@ const createAdmin = async (req, res) => {
 const getAllUsers = async (req, res) =>{
     try{
         // const allUsers = await User.find({}, "-password")
-        //
+
         const roles = ['admin', 'client']
         const allUsers = await User.aggregate([
             { $project: { password: 0 }},
