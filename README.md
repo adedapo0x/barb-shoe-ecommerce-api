@@ -27,7 +27,7 @@ npm install
 ```
 
 Set up your environment variables:
-Create a `.env` file in the root direcrtory and add the following:
+Create a `.env` file in the root directory and add the following:
 - MONGO_URI
 - SECRET_KEY
 - PORT
