@@ -126,7 +126,7 @@ const changeAvailability = async (req, res) =>{
                     }
                 }}
         ])
-        return res.status.json({message: `Availability is now ${product.availability}`})
+        return res.json({status: product.availability, message: `Availability is now ${product.availability}`})
     } catch (err){
         console.log(err)
         return res.status(404).json({message: "Problem updating availability of product!"})
