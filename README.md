@@ -1,4 +1,4 @@
-This is a shoe e-commerce API built with JavaScript, Node.js and Express with MongoDB as the DBMS.
+This is a shoe e-commerce API built with JavaScript, Express and MongoDB. It allows users to browse products, add them to a cart, and make mock-up purchases.
 
 [Click Here](https://documenter.getpostman.com/view/30687617/2sAXjM2rH7) to view the documentation
 
@@ -7,7 +7,7 @@ This is a shoe e-commerce API built with JavaScript, Node.js and Express with Mo
 - Seamless user registration and subsequent authentication
 - Retrieving all categories of products available
 - Filtering products by parameters inputted
-- Cart management
+- Cart and order management
 - Adding optional address for delivery option
 - Mocking the purchase process
 
@@ -24,4 +24,11 @@ To run on a development server:
 git clone https://github.com/adedapo0x/barb-shoe-ecommerce-api.git
 cd barb-shoe-ecommerce-api
 npm install
+```
+
+Set up your environment variables:
+Create a `.env` file in the root direcrtory and add the following:
+- MONGO_URI
+- SECRET_KEY
+- PORT
   
