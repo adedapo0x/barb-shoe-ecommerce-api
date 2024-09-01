@@ -20,6 +20,8 @@ This is a shoe e-commerce API built with JavaScript, Node.js and Express with Mo
 - Automatic change of availability of a footwear once it is sold out or if intentionally made unavailable for a host of reasons
 
 To run on a development server:
-bash 
-git clone https://github.com/harryportal/EcommerceApi_Node
+```
+git clone https://github.com/adedapo0x/barb-shoe-ecommerce-api.git
+cd EcommerceApi_Node
+npm install
   
