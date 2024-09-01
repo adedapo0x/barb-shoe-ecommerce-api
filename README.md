@@ -22,6 +22,6 @@ This is a shoe e-commerce API built with JavaScript, Node.js and Express with Mo
 To run on a development server:
 ```
 git clone https://github.com/adedapo0x/barb-shoe-ecommerce-api.git
-cd EcommerceApi_Node
+cd barb-shoe-ecommerce-api.git
 npm install
   
