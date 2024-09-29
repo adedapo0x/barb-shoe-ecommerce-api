@@ -13,7 +13,7 @@ const verifyJWT = (req, res, next) => {
         req.user = jwt.verify(token, process.env.SECRET_KEY)
         next()
     } catch (err) {
-.        console.log(err)
+         console.log(err)
         return res.status(401).json({message: "Unauthorized access!"})
     }
 }
