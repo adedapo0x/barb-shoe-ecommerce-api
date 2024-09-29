@@ -10,9 +10,9 @@ const httpRegister = async (req, res) => {
         const { firstName, lastName, email, password } = req.body
 
         // check if email already exists
-        // const existingUser = await User.findOne({ normalizedEmail: email })
-        // if (existingUser) return res.status(400).json({message: "Email already exists!"})
-        //
+        const existingUser = await User.findOne({ normalizedEmail: email })
+        if (existingUser) return res.status(400).json({message: "Email already exists!"})
+
         // // if there are no pre-existing user with inputted email, create new user and save to DB
         // const user = new User({firstName, lastName,
         //     originalEmail: email,
